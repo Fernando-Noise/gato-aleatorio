@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Gato Aleatório</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: Comic Sans MS;
+      text-align: center;
+      margin-top: 50px;
+      background: #ffe5b4;
+    }
+
+    h1 {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 40px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      cursor: pointer;
+      border-radius: 10px;
+      border: none;
+      margin: 10px;
+    }
+
+    img {
+      margin-top: 30px;
+      width: 90%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+  
+  </style>
+</head>
+
+<body>
+
+<h1>🐱 Gato Aleatório</h1>
+<h5>Se você quiser salvar a foto de algum gato, basta segurar o dedo na imagem que vai aparecer a opção de baixar/salvar.</h2>
+
+<button onclick="mostrarGato()">Mostrar gato</button>
+
+<br>
+
+<img id="gato" src="" />
+
+<br>
+
+<footer>
+  Criado por Fernando Souza - fernando_s.i@hotmail.com
+</footer>
+
+<script>
+async function mostrarGato() {
+  const resposta = await fetch("https://api.thecatapi.com/v1/images/search");
+  const dados = await resposta.json();
+  document.getElementById("gato").src = dados[0].url;
+
+  const audio = new Audio("https://www.orangefreesounds.com/wp-content/uploads/2022/04/Cat-sound-meow.mp3");
+  audio.play();
+}
+
+async function compartilharGato() {
+  const img = document.getElementById("gato").src;
+
+  if (!img) {
+    alert("Mostre um gato primeiro!");
+    return;
+  }
+
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Olha esse gato 🐱",
+        text: "Encontrei esse gato aleatório!",
+        url: img
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  } else {
+    navigator.clipboard.writeText(img);
+    alert("Link copiado! 🐱");
+  }
+}
+</script>
+
+</body>
+</html>
